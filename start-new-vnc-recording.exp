@@ -1,0 +1,15 @@
+#!/usr/bin/expect
+set timeout 3
+set vncpass "fill-in"
+set vnchost "fill-in"
+set now [clock seconds]
+set datenow [clock format $now -format {%b-%d}]
+log_user 0
+
+spawn -ignore HUP /usr/local/bin/flvrec.py -o /tmp/vnc_rec-$datenow.flv $vnchost
+
+expect "Password for $vnchost:5900:"
+
+send "$vncpass\r"
+expect_background
+exit

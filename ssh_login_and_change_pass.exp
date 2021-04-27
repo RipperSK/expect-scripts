@@ -1,0 +1,55 @@
+#!/usr/bin/expect
+
+set timeout 20
+
+set ip [lindex $argv 0]
+
+set user "fill in"
+
+set password "fill in"
+
+set password2 "fill in"
+
+set sshpubstring "fill in"
+
+set useremail "fill in"
+
+spawn ssh "$user\@$ip"
+
+expect "Are you sure you want to continue connecting (yes/no)?"
+
+send "yes\r"
+
+expect "$user@$ip's password:"
+
+send "$password\r";
+
+expect "(current) UNIX password:"
+
+send "$password\r";
+
+expect "New password:"
+
+send "$password2\r";
+
+expect "Retype new password:"
+
+send "$password2\r";
+
+expect "\[$user@.*"
+
+spawn ssh "$user\@$ip"
+
+expect "$user@$ip's password:"
+
+send "$password2\r";
+
+expect "\[$user@.*"
+
+send "mkdir .ssh\r"
+
+send "echo \"ssh-rsa $sshpubstring $useremail\" > .ssh/authorized_keys\r";
+
+send "exit\r"
+
+interact

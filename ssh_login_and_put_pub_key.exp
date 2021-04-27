@@ -1,0 +1,29 @@
+#!/usr/bin/expect
+
+set timeout 20
+
+set ip [lindex $argv 0]
+
+set user "fill in"
+
+set password "fill in"
+
+set sshpubstring "fill in"
+
+set useremail "fill in"
+
+spawn ssh "$user\@$ip"
+
+expect "$user@$ip's password:"
+
+send "$password\r";
+
+expect "\[$user@.*"
+
+send "mkdir .ssh\r"
+
+send "echo \"ssh-rsa $sshpubstring $useremail\" > .ssh/authorized_keys\r";
+
+send "exit\r"
+
+interact
